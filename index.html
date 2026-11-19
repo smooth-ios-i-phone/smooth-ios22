@@ -735,9 +735,9 @@
           <div class="dns-card" data-dns="adguard-vip">
             <div class="dns-radio"><i class="fa-regular fa-circle"></i></div>
             <div class="dns-info">
-              <h4>LAKEE AdGuard VIP Anti-Track DNS</h4>
-              <p>Blocks background ads, reduces packet loss in games.</p>
-              <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP</span>
+              <h4>👑 LAKEE VIP LOCK DNS (AdGuard)</h4>
+              <p>94.140.14.14 • Blocks background ads &amp; trackers • Auto-expires with VIP Key.</p>
+              <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP AUTO-EXPIRY</span>
             </div>
           </div>
 
@@ -1084,22 +1084,30 @@
   </div>
 
 
-  <!-- Launch / Game Booster Animated Modal -->
+  <!-- Launch / Game Booster Real iOS Modal -->
   <div class="modal-backdrop hidden" id="gameBoostModal">
     <div class="ios-modal alert-modal text-center">
       <div class="booster-loader-wrap">
         <div class="booster-spinner"></div>
         <div class="booster-icon-center"><i class="fa-solid fa-bolt-lightning text-cyan"></i></div>
       </div>
-      <h3 style="margin-top: 16px; font-size: 1.15rem;" id="boostModalTitle">Optimizing for Free Fire...</h3>
+      <h3 style="margin-top: 16px; font-size: 1.15rem;" id="boostModalTitle">Pre-Launch Boost Check...</h3>
       <div class="boost-progress-steps">
-        <div class="boost-step active" id="bStep1"><i class="fa-solid fa-check text-green"></i> System RAM & Cache Flushed</div>
-        <div class="boost-step active" id="bStep2"><i class="fa-solid fa-check text-green"></i> Low-Latency Gaming DNS Activated</div>
-        <div class="boost-step active" id="bStep3"><i class="fa-solid fa-check text-green"></i> 120 FPS Thermal Profile Applied</div>
-        <div class="boost-step pending" id="bStep4"><i class="fa-solid fa-spinner fa-spin text-cyan"></i> Launching Game...</div>
+        <div class="boost-step active" id="bStep1"><i class="fa-solid fa-spinner fa-spin text-cyan"></i> Checking Live Server Ping...</div>
+        <div class="boost-step active" id="bStep2"><i class="fa-solid fa-temperature-half text-green"></i> Checking Thermal / Charging Status...</div>
+        <div class="boost-step active" id="bStep3"><i class="fa-solid fa-wand-magic-sparkles text-purple"></i> Ready: Smooth Gaming Mode Shortcut</div>
       </div>
-      <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 14px;">
-        iPhone එකෙන් "Open" ඇසුවහොත් Allow කරන්න.
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px;">
+        <a id="boostRunShortcutBtn" href="shortcuts://run-shortcut?name=Smooth%20Gaming%20Mode" class="cyber-btn purple-glow btn-full" style="font-size:0.84rem; padding:11px;">
+          <i class="fa-brands fa-apple"></i> Run "Smooth Gaming Mode" Shortcut (Real Boost)
+        </a>
+        <a id="boostDirectLaunchBtn" href="#" class="cyber-btn primary-glow btn-full" style="font-size:0.84rem; padding:11px;">
+          <i class="fa-solid fa-rocket"></i> Direct Open Game
+        </a>
+        <button type="button" id="closeBoostModalBtn" class="text-link-btn" style="margin-top:4px;">Close</button>
+      </div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 10px;">
+        iPhone එකෙන් "Open" ඇසුවහොත් Allow කරන්න (Shortcut install කරලා නැත්නම් Siri Shortcut tab එකෙන් add කරන්න).
       </p>
     </div>
   </div>
@@ -1873,13 +1881,40 @@
       const game = GAME_CONFIGS[gameId] || GAME_CONFIGS.pubg;
       const modal = document.getElementById('gameBoostModal');
       const titleEl = document.getElementById('boostModalTitle');
-      if (titleEl) titleEl.textContent = `Optimizing for ${game.title}...`;
+      const s1 = document.getElementById('bStep1');
+      const s2 = document.getElementById('bStep2');
+      const directBtn = document.getElementById('boostDirectLaunchBtn');
+      const closeBtn = document.getElementById('closeBoostModalBtn');
+
+      if (titleEl) titleEl.textContent = `Pre-Launch Boost: ${game.title}`;
+      if (directBtn) {
+        directBtn.href = game.urlScheme || '#';
+        directBtn.innerHTML = `<i class="fa-solid fa-rocket"></i> Direct Open ${game.title}`;
+      }
+      if (closeBtn) closeBtn.onclick = () => modal && modal.classList.add('hidden');
+
+      if (s2) {
+        if (AppState.isCharging) {
+          s2.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber"></i> Charging Detected — Unplug to stop heat/FPS drop!';
+        } else {
+          s2.innerHTML = `<i class="fa-solid fa-check text-green"></i> Thermal Ready (${AppState.deviceModel})`;
+        }
+      }
+
+      if (s1) s1.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-cyan"></i> Measuring Live SEA Server Ping...';
       if (modal) modal.classList.remove('hidden');
 
-      setTimeout(() => {
-        if (game.urlScheme) window.location.href = game.urlScheme;
-        setTimeout(() => { if (modal) modal.classList.add('hidden'); }, 2500);
-      }, 1600);
+      // Real pre-launch ping check
+      const t0 = performance.now();
+      fetch(`https://dynamodb.ap-southeast-1.amazonaws.com/ping?b=${Date.now()}`, { mode: 'no-cors', cache: 'no-store' })
+        .then(() => {
+          const ms = Math.max(1, Math.round(performance.now() - t0));
+          AppState.currentPing = ms;
+          if (s1) s1.innerHTML = `<i class="fa-solid fa-check text-green"></i> Live SEA Ping: <strong>${ms} ms</strong>`;
+        })
+        .catch(() => {
+          if (s1) s1.innerHTML = `<i class="fa-solid fa-wifi text-cyan"></i> Network Ready (Last Ping: ${AppState.currentPing || '--'} ms)`;
+        });
     }
 
     function getDeviceTunedGameConfig(game, isVip, deviceModel) {
@@ -2199,10 +2234,35 @@
         return;
       }
 
+      const keyData = AppState.activeKeyData;
+      let planSuffix = '30d';
+      let planNote = '30 Days VIP Pass';
+      if (keyData) {
+        if (keyData.plan === '1_day') { planSuffix = '1d'; planNote = '1 Day VIP Pass (Auto-removes in 24h)'; }
+        else if (keyData.plan === '7_days') { planSuffix = '7d'; planNote = '7 Days VIP Pass (Auto-removes in 7 Days)'; }
+        else if (keyData.plan === '30_days') { planSuffix = '30d'; planNote = '30 Days VIP Pro (Auto-removes in 30 Days)'; }
+        else if (keyData.plan === 'lifetime') { planSuffix = 'life'; planNote = 'Lifetime VIP Elite (No Expiry)'; }
+      }
+
+      const isLakeeLockDns = AppState.selectedDns === 'adguard-vip';
+      const targetFile = isLakeeLockDns ? `LAKEE_VIP_LOCK_DNS_${planSuffix}.mobileconfig` : cfg.file;
+      const displayTitle = isLakeeLockDns ? '👑 LAKEE VIP LOCK DNS 👑' : '👑 LAKEE VIP OPTIMIZER 👑';
+
       const isHosted = window.location.protocol.startsWith('http');
       if (AppState.isIos && isHosted && AppState.staticProfilesAvailable) {
-        window.location.href = getHostingBaseDir() + 'profiles/' + cfg.file;
+        window.location.href = getHostingBaseDir() + 'profiles/' + targetFile;
         return;
+      }
+
+      // Embed exact Apple RemovalDate matching VIP License Key expiry!
+      let expiryXml = '';
+      if (keyData && keyData.expires_at) {
+        const expIso = new Date(keyData.expires_at).toISOString().replace(/\.\d{3}Z$/, 'Z');
+        expiryXml = `\n    <key>RemovalDate</key><date>${expIso}</date>`;
+        planNote = `Auto-expires on ${new Date(keyData.expires_at).toLocaleDateString()}`;
+      } else if (!(keyData && keyData.plan === 'lifetime')) {
+        const durSec = planSuffix === '1d' ? 86400 : (planSuffix === '7d' ? 604800 : 2592000);
+        expiryXml = `\n    <key>DurationUntilRemoval</key><real>${durSec}</real>`;
       }
 
       const uuid1 = 'LAKEE-DNS-' + Math.random().toString(36).substring(2, 9).toUpperCase();
@@ -2211,18 +2271,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>PayloadDisplayName</key><string>👑 LAKEE VIP OPTIMIZER 👑</string>
+    <key>PayloadDisplayName</key><string>${displayTitle}</string>
     <key>PayloadOrganization</key><string>${cfg.org}</string>
-    <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.${uuid1}</string>
+    <key>PayloadIdentifier</key><string>com.lakee.vip.lockdns.${uuid1}</string>
     <key>PayloadRemovalDisallowed</key><false/>
     <key>PayloadType</key><string>Configuration</string>
     <key>PayloadUUID</key><string>${uuid1}</string>
-    <key>PayloadVersion</key><integer>1</integer>
-    <key>PayloadDescription</key><string>👑 LAKEE VIP OPTIMIZER v2 👑
+    <key>PayloadVersion</key><integer>1</integer>${expiryXml}
+    <key>PayloadDescription</key><string>${displayTitle}
 ━━━━━━━━━━━━━━━━━━━━
-✅ ${cfg.name}
+✅ Primary DNS: ${cfg.primary}
+✅ Secondary DNS: ${cfg.secondary}
+⏳ License: ${planNote}
 📱 Compatible: iPhone 6 – iPhone 17 Pro Max
-✅ 100% Safe &amp; Anti-Ban (Official iOS Profile)</string>
+✅ 100% Safe &amp; Anti-Ban (Official iOS Profile)
+
+[ ℹ️ ] PROFILE DETAILS:
+• Blocks background ads &amp; tracking requests
+• Reduces gaming packet loss &amp; ping spikes
+• Auto-removes from iPhone when VIP Key expires</string>
     <key>PayloadContent</key>
     <array>
         <dict>
@@ -2233,8 +2300,8 @@
                 <key>ServerAddresses</key>
                 <array><string>${cfg.primary}</string><string>${cfg.secondary}</string></array>
             </dict>
-            <key>PayloadDisplayName</key><string>LAKEE Encrypted DNS</string>
-            <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.payload.${uuid2}</string>
+            <key>PayloadDisplayName</key><string>LAKEE VIP LOCK DNS</string>
+            <key>PayloadIdentifier</key><string>com.lakee.vip.lockdns.payload.${uuid2}</string>
             <key>PayloadType</key><string>com.apple.dnsSettings.managed</string>
             <key>PayloadUUID</key><string>${uuid2}</string>
             <key>PayloadVersion</key><integer>1</integer>
@@ -2247,7 +2314,7 @@
       const blobUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = blobUrl;
-      a.download = cfg.file;
+      a.download = targetFile;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
