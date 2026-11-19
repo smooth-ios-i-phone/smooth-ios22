@@ -2007,7 +2007,23 @@
       URL.revokeObjectURL(url);
     };
 
+    function getHostingBaseDir() {
+      const cleanHref = window.location.href.split('#')[0].split('?')[0];
+      if (cleanHref.endsWith('.html') || cleanHref.endsWith('.htm')) {
+        return cleanHref.substring(0, cleanHref.lastIndexOf('/') + 1);
+      }
+      return cleanHref.endsWith('/') ? cleanHref : cleanHref + '/';
+    }
+
     function initDnsGenerator() {
+      // Pre-check once on page load (outside click handler!) whether profiles/ folder is deployed on host
+      AppState.staticProfilesAvailable = false;
+      if (window.location.protocol.startsWith('http')) {
+        fetch(getHostingBaseDir() + 'profiles/cloudflare_3d.mobileconfig', { method: 'HEAD', cache: 'no-store' })
+          .then(res => { if (res.ok) AppState.staticProfilesAvailable = true; })
+          .catch(() => {});
+      }
+
       const dnsCards = document.querySelectorAll('.dns-card');
       dnsCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -2047,27 +2063,15 @@
       const blob = new Blob([xmlContent], { type: 'application/x-apple-aspen-config' });
       const blobUrl = URL.createObjectURL(blob);
       const isHosted = window.location.protocol.startsWith('http');
-      // Build absolute URL that preserves GitHub Pages /repo-name/ subpath even without trailing slash!
-      let resolvedStaticUrl = null;
-      if (staticPath && isHosted) {
-        const cleanHref = window.location.href.split('#')[0].split('?')[0];
-        let baseDir = cleanHref;
-        if (cleanHref.endsWith('.html') || cleanHref.endsWith('.htm')) {
-          baseDir = cleanHref.substring(0, cleanHref.lastIndexOf('/') + 1);
-        } else if (!cleanHref.endsWith('/')) {
-          baseDir = cleanHref + '/';
-        }
-        resolvedStaticUrl = baseDir + staticPath;
-      }
+      const useStatic = !!(AppState.isIos && staticPath && isHosted && AppState.staticProfilesAvailable);
+      const targetUrl = useStatic ? (getHostingBaseDir() + staticPath) : blobUrl;
 
-      const targetUrl = resolvedStaticUrl || blobUrl;
-
-      // Show visible download feedback + real <a> direct fallback link for every browser
+      // Show visible download feedback + real <a> direct fallback link for every browser (never 404s!)
       const statusBox = document.getElementById('dnsDownloadStatus');
       const fallbackLink = document.getElementById('dnsDirectFallbackLink');
       if (statusBox && fallbackLink) {
         fallbackLink.href = targetUrl;
-        if (!AppState.isIos) {
+        if (!useStatic) {
           fallbackLink.setAttribute('download', filename);
         } else {
           fallbackLink.removeAttribute('download');
@@ -2076,12 +2080,13 @@
         statusBox.classList.remove('hidden');
       }
 
-      if (AppState.isIos && resolvedStaticUrl) {
-        // Native iOS Safari / Chrome direct navigation to real HTTPS .mobileconfig
-        window.location.href = resolvedStaticUrl;
+      if (useStatic) {
+        // Verified static HTTPS .mobileconfig exists -> native iOS Profile Installer
+        window.location.href = targetUrl;
       } else {
+        // In-memory Blob download -> NEVER 404s on any browser or device!
         const a = document.createElement('a');
-        a.href = targetUrl;
+        a.href = blobUrl;
         a.download = filename;
         document.body.appendChild(a);
         a.click();
