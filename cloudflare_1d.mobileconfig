@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadDisplayName</key><string>👑 LAKEE VIP OPTIMIZER 👑</string>
+    <key>PayloadOrganization</key><string>LAKEE VIP DNS • Cloudflare 1.1.1.1</string>
+    <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.cloudflare.1d</string>
+    <key>PayloadRemovalDisallowed</key><false/>
+    <key>PayloadType</key><string>Configuration</string>
+    <key>PayloadUUID</key><string>A1B2C3D4-1111-4000-8000-000000000101</string>
+    <key>PayloadVersion</key><integer>1</integer>
+    <key>DurationUntilRemoval</key><real>86400</real>
+    <key>PayloadDescription</key><string>👑 LAKEE VIP OPTIMIZER v2 👑
+━━━━━━━━━━━━━━━━━━━━
+✅ Cloudflare 1.1.1.1 Gaming DNS
+⏳ Plan: Auto-expires in 1 Day
+📱 Compatible: iPhone 6 – iPhone 16 Pro Max
+✅ 100% Safe &amp; Anti-Ban (Official iOS Profile)
+
+[ ℹ️ ] PROFILE DETAILS:
+• Apple Configuration Profile (.mobileconfig)
+• Encrypted DNS-over-HTTPS (Low-Ping Routing)
+• Instant 1-tap install &amp; auto-expiry enabled</string>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key><string>HTTPS</string>
+                <key>ServerURL</key><string>https://cloudflare-dns.com/dns-query</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>1.1.1.1</string>
+                    <string>1.0.0.1</string>
+                </array>
+            </dict>
+            <key>PayloadDisplayName</key><string>LAKEE Cloudflare 1.1.1.1 Gaming DNS</string>
+            <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.cloudflare.1d.payload</string>
+            <key>PayloadType</key><string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key><string>A1B2C3D4-1111-4000-8000-000000000102</string>
+            <key>PayloadVersion</key><integer>1</integer>
+        </dict>
+    </array>
+</dict>
+</plist>

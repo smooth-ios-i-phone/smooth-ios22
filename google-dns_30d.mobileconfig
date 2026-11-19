@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadDisplayName</key><string>👑 LAKEE VIP OPTIMIZER 👑</string>
+    <key>PayloadOrganization</key><string>LAKEE VIP DNS • Google 8.8.8.8</string>
+    <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.google-dns.30d</string>
+    <key>PayloadRemovalDisallowed</key><false/>
+    <key>PayloadType</key><string>Configuration</string>
+    <key>PayloadUUID</key><string>A1B2C3D4-2222-4000-8000-000000003001</string>
+    <key>PayloadVersion</key><integer>1</integer>
+    <key>DurationUntilRemoval</key><real>2592000</real>
+    <key>PayloadDescription</key><string>👑 LAKEE VIP OPTIMIZER v2 👑
+━━━━━━━━━━━━━━━━━━━━
+✅ Google 8.8.8.8 Ultra-Stable DNS
+⏳ Plan: Auto-expires in 30 Days
+📱 Compatible: iPhone 6 – iPhone 16 Pro Max
+✅ 100% Safe &amp; Anti-Ban (Official iOS Profile)
+
+[ ℹ️ ] PROFILE DETAILS:
+• Apple Configuration Profile (.mobileconfig)
+• Encrypted DNS-over-HTTPS (Low-Ping Routing)
+• Instant 1-tap install &amp; auto-expiry enabled</string>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key><string>HTTPS</string>
+                <key>ServerURL</key><string>https://dns.google/dns-query</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>8.8.8.8</string>
+                    <string>8.8.4.4</string>
+                </array>
+            </dict>
+            <key>PayloadDisplayName</key><string>LAKEE Google 8.8.8.8 Ultra-Stable DNS</string>
+            <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.google-dns.30d.payload</string>
+            <key>PayloadType</key><string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key><string>A1B2C3D4-2222-4000-8000-000000003002</string>
+            <key>PayloadVersion</key><integer>1</integer>
+        </dict>
+    </array>
+</dict>
+</plist>
