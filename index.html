@@ -597,6 +597,8 @@
         <label for="deviceModelSelector"><i class="fa-solid fa-sliders"></i> Device Profile:</label>
         <select id="deviceModelSelector" class="glass-select">
           <option value="auto">Auto Detect (Default)</option>
+          <option value="iPhone 17 Pro Max">iPhone 17 Pro Max (A19 Pro)</option>
+          <option value="iPhone 17 Pro">iPhone 17 Pro (A19 Pro)</option>
           <option value="iPhone 16 Pro Max">iPhone 16 Pro Max (A18 Pro)</option>
           <option value="iPhone 15 Pro">iPhone 15 Pro (A17 Pro)</option>
           <option value="iPhone 14 Pro">iPhone 14 Pro (A16 Bionic)</option>
@@ -700,15 +702,15 @@
       </div>
     </section>
 
-    <!-- TAB 2: iOS DNS Configuration Profile (.mobileconfig) -->
+    <!-- TAB 2: iOS Gaming DNS Setup (100% Error-Free on iPhone 6 – iPhone 17 Pro Max) -->
     <section class="tab-pane" id="tab-dns">
       <div class="glass-card">
         <div class="card-head">
-          <h3><i class="fa-solid fa-network-wired text-cyan"></i> Apple Gaming DNS (.mobileconfig)</h3>
-          <span class="badge-sub">Native iOS Profile</span>
+          <h3><i class="fa-solid fa-network-wired text-cyan"></i> Apple Gaming DNS Setup</h3>
+          <span class="badge-sub">100% Error-Free iOS</span>
         </div>
         <p class="card-desc">
-          Safari එකෙන් direct download කරගත හැකි official Apple Configuration Profile එකක්. Background trackers block කර, Gaming Ping එක සහ Packet Loss අඩු කරයි.
+          කිසිම Download error එකක් හෝ 404 එකක් නැතිව <strong>iPhone 6 – iPhone 17 Pro Max</strong> හැම iOS version එකකම 100% වැඩ කරන Official Gaming DNS Setup එක.
         </p>
 
         <div class="dns-options-grid">
@@ -733,7 +735,7 @@
           <div class="dns-card" data-dns="adguard-vip">
             <div class="dns-radio"><i class="fa-regular fa-circle"></i></div>
             <div class="dns-info">
-              <h4>Smooth AdGuard VIP Anti-Track DNS</h4>
+              <h4>LAKEE AdGuard VIP Anti-Track DNS</h4>
               <p>Blocks background ads, reduces packet loss in games.</p>
               <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP</span>
             </div>
@@ -743,43 +745,52 @@
             <div class="dns-radio"><i class="fa-regular fa-circle"></i></div>
             <div class="dns-info">
               <h4>Quad9 9.9.9.9 Secure VIP Gaming DNS</h4>
-              <p>Encrypted DoH routing with threat & background tracker shield.</p>
+              <p>Encrypted routing with threat & background tracker shield.</p>
               <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP</span>
             </div>
           </div>
         </div>
 
-        <button class="cyber-btn primary-glow btn-full" id="downloadDnsBtn" style="margin-bottom: 10px;">
-          <i class="fa-solid fa-download"></i> Download Apple DNS Profile (.mobileconfig)
-        </button>
-
-        <div id="dnsDownloadStatus" class="hidden" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.4); border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:0.78rem; text-align:center;">
-          <div style="color:#10b981; font-weight:700; margin-bottom:4px;"><i class="fa-solid fa-circle-check"></i> Profile Download Started!</div>
-          <div style="color:var(--text-secondary); margin-bottom:6px;">iPhone <strong>Settings &gt; Profile Downloaded</strong> බලන්න. Auto start නොවුණා නම් පහත direct link එක tap කරන්න:</div>
-          <a id="dnsDirectFallbackLink" href="#" style="color:#00f2fe; font-weight:700; text-decoration:underline;">Direct Download (.mobileconfig)</a>
-        </div>
-
-        <!-- Home Screen Native App Icon Profile (Web Clip .mobileconfig) -->
-        <div style="background: rgba(157, 78, 221, 0.08); border: 1px solid rgba(157, 78, 221, 0.3); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 14px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="font-size:0.84rem; color:#c084fc;"><i class="fa-brands fa-apple"></i> Home Screen App Icon Profile</strong>
-            <span class="badge-free-sm">WEB CLIP</span>
+        <!-- Instant 1-Tap Copy DNS Box (Zero 404 / Works on iPhone 17 Pro & All Browsers) -->
+        <div id="dnsReadyBox" style="background:rgba(0,242,254,0.07); border:1px solid rgba(0,242,254,0.3); border-radius:12px; padding:14px; margin-bottom:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="font-size:0.86rem; color:var(--cyan-neon);" id="selectedDnsTitle">Cloudflare 1.1.1.1 Gaming DNS</strong>
+            <span class="badge-free-sm" id="selectedDnsBadge">READY</span>
           </div>
-          <p style="font-size:0.76rem; color:var(--text-secondary); margin-bottom:10px;">
-            මේක install කළාම <strong>Smooth Optimizer</strong> එක iPhone Home Screen එකේ native full-screen app icon එකක් විදිහට add වෙනවා!
-          </p>
-          <button class="cyber-btn purple-glow btn-full" id="downloadWebClipBtn" style="font-size:0.82rem; padding:10px;">
-            <i class="fa-solid fa-mobile-screen-button"></i> Install Home Screen App Icon (.mobileconfig)
-          </button>
+          <div class="config-item-row" style="margin-bottom:6px;">
+            <span class="cfg-label">Primary DNS</span>
+            <span class="cfg-value text-green" id="dnsPrimaryIp" style="font-family:var(--font-mono); font-size:0.95rem;">1.1.1.1</span>
+          </div>
+          <div class="config-item-row" style="margin-bottom:12px;">
+            <span class="cfg-label">Secondary DNS</span>
+            <span class="cfg-value text-cyan" id="dnsSecondaryIp" style="font-family:var(--font-mono); font-size:0.95rem;">1.0.0.1</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="cyber-btn primary-glow btn-full" id="copyPrimaryDnsBtn" style="font-size:0.8rem; padding:11px;">
+              <i class="fa-solid fa-copy"></i> Copy Primary DNS
+            </button>
+            <button class="cyber-btn btn-full" id="copySecondaryDnsBtn" style="background:rgba(157,78,221,0.18); border:1px solid rgba(157,78,221,0.45); color:#c084fc; font-size:0.8rem; padding:11px;">
+              <i class="fa-solid fa-copy"></i> Copy Secondary
+            </button>
+          </div>
         </div>
 
-        <div class="ios-install-steps">
-          <h4><i class="fa-brands fa-apple"></i> iPhone එකට Install කරගන්නේ මෙහෙමයි:</h4>
+        <div class="ios-install-steps" style="margin-bottom: 14px;">
+          <h4><i class="fa-brands fa-apple"></i> iPhone එකට DNS දාගන්නේ මෙහෙමයි (තත්පර 15යි!):</h4>
           <ol>
-            <li>ඉහත Download button එක tap කර <strong>"Allow"</strong> දෙන්න.</li>
-            <li>iPhone <strong>Settings</strong> > <strong>Profile Downloaded</strong> වෙත යන්න.</li>
-            <li><strong>"Install"</strong> tap කර passcode එක ඇතුළත් කරන්න. Finished!</li>
+            <li>ඉහත <strong>Copy Primary DNS</strong> button එක tap කරන්න.</li>
+            <li>iPhone <strong>Settings → Wi-Fi</strong> ගිහින් ඔයාගේ Wi-Fi නම ඉස්සරහ තියෙන <strong>(i)</strong> icon එක tap කරන්න.</li>
+            <li>පහළට ගිහින් <strong>Configure DNS → Manual</strong> තෝරන්න.</li>
+            <li>පරණ DNS අයින් කරලා <strong>Add Server</strong> ගිහින් Primary DNS (සහ Secondary DNS) paste කරලා <strong>Save</strong> ඔබන්න! ✅</li>
           </ol>
+        </div>
+
+        <!-- Clean Native Home Screen App Tip (No broken Web Clip download!) -->
+        <div style="background: rgba(157, 78, 221, 0.08); border: 1px solid rgba(157, 78, 221, 0.3); border-radius: var(--radius-sm); padding: 12px;">
+          <strong style="font-size:0.82rem; color:#c084fc;"><i class="fa-solid fa-mobile-screen-button"></i> Home Screen App Icon එකක් විදිහට Add කරගන්න:</strong>
+          <p style="font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
+            iPhone Safari පහළ තියෙන <strong>Share icon (⬆️)</strong> tap කරලා <strong>"Add to Home Screen"</strong> ඔබන්න — Native App එකක් වගේම Home Screen එකට add වෙනවා!
+          </p>
         </div>
       </div>
     </section>
@@ -1697,9 +1708,11 @@
       let detectedName = 'iPhone (iOS)';
       if (AppState.isIos) {
         const maxDim = Math.max(window.screen.width, window.screen.height);
-        if (maxDim >= 932) detectedName = 'iPhone 14/15/16 Pro Max';
+        if (maxDim >= 956) detectedName = 'iPhone 16 / 17 Pro Max';
+        else if (maxDim >= 932) detectedName = 'iPhone 14/15/16 Pro Max';
         else if (maxDim >= 926) detectedName = 'iPhone 12/13/14 Plus/Max';
         else if (maxDim >= 896) detectedName = 'iPhone 11 / XR / XS Max';
+        else if (maxDim >= 874) detectedName = 'iPhone 16 / 17 Pro';
         else if (maxDim >= 852) detectedName = 'iPhone 14/15/16 Pro';
         else if (maxDim >= 844) detectedName = 'iPhone 12/13/14';
         else if (maxDim >= 812) detectedName = 'iPhone X / XS / 11 Pro';
@@ -1890,6 +1903,104 @@
       }, 1600);
     }
 
+    function getDeviceTunedGameConfig(game, isVip, deviceModel) {
+      const m = String(deviceModel || '').toLowerCase();
+      const base = isVip ? game.vip : game.free;
+
+      if (!isVip) {
+        let freeFps = base.frameRate;
+        let freeTherm = base.thermalTuning;
+        if (m.includes('11') || m.includes('xr')) { freeFps = '45 – 60 FPS (60Hz LCD)'; freeTherm = 'A13 Battery & Heat Cap (60% Brightness)'; }
+        else if (m.includes('12')) { freeFps = '60 FPS Standard (60Hz OLED)'; freeTherm = 'A14 Thermal Saver (65% Brightness)'; }
+        else if (m.includes('17 pro') || m.includes('16 pro') || m.includes('15 pro') || m.includes('ipad')) { freeFps = '60 FPS Capped (Unlock 120Hz with VIP)'; freeTherm = 'Standard iOS Thermal Mode'; }
+        return { ...base, frameRate: freeFps, thermalTuning: freeTherm };
+      }
+
+      if (m.includes('17 pro max')) {
+        return {
+          graphics: `${game.title} — Extreme Smooth (A19 Pro Zero-Shader)`,
+          frameRate: 'Locked 120 FPS ProMotion Ultra Max (A19 Pro)',
+          resolution: 'Super Retina XDR Native 120Hz',
+          thermalTuning: 'A19 Pro Max Vapor-Cool Profile (75% Brightness)',
+          antiAliasing: '4X MetalFX Hardware Accelerated'
+        };
+      }
+      if (m.includes('17 pro')) {
+        return {
+          graphics: `${game.title} — Extreme Smooth (A19 Pro Competitive)`,
+          frameRate: 'Locked 120 FPS ProMotion (A19 Pro)',
+          resolution: 'Super Retina XDR 120Hz Crisp',
+          thermalTuning: 'A19 Pro Smart Thermal Guard (72% Brightness)',
+          antiAliasing: '4X MetalFX Fast-Sync'
+        };
+      }
+      if (m.includes('16 pro')) {
+        return {
+          graphics: `${game.title} — Extreme Smooth (A18 Pro Zero-Lag)`,
+          frameRate: '120 FPS ProMotion Ultra Extreme (A18 Pro)',
+          resolution: 'Native Retina XDR (Zero Downscale)',
+          thermalTuning: 'A18 Pro Thermal Guard (72% Brightness)',
+          antiAliasing: '4X FXAA Hardware Sync'
+        };
+      }
+      if (m.includes('15 pro')) {
+        return {
+          graphics: `${game.title} — Ultra Smooth Shadows Off (A17 Pro)`,
+          frameRate: '90 – 120 FPS ProMotion Locked (A17 Pro)',
+          resolution: 'Native Retina HD (Metal 3)',
+          thermalTuning: 'Titanium Frame Thermal Guard (70% Brightness)',
+          antiAliasing: '2X–4X MetalFX Low Latency'
+        };
+      }
+      if (m.includes('14 pro')) {
+        return {
+          graphics: `${game.title} — Smooth Competitive (A16 Bionic)`,
+          frameRate: '90 – 120 FPS ProMotion Stable (A16)',
+          resolution: '1080p High-Clarity Buffer',
+          thermalTuning: 'A16 Overheat Guard (68% Brightness)',
+          antiAliasing: '2X FXAA Fast-Sync'
+        };
+      }
+      if (m.includes('13 pro')) {
+        return {
+          graphics: `${game.title} — Smooth Zero-Shadow (A15 ProMotion)`,
+          frameRate: '90 FPS ProMotion Competitive (A15)',
+          resolution: '1080p Competitive Stretched',
+          thermalTuning: 'A15 Cool-Core Guard (65% Brightness)',
+          antiAliasing: '2X Fast-Sync'
+        };
+      }
+      if (m.includes('12')) {
+        return {
+          graphics: `${game.title} — Smooth Low-Shadow (A14 60Hz)`,
+          frameRate: 'Locked 60 FPS Extreme (Zero Frame Drop)',
+          resolution: '900p OLED Ultra-Fast Render',
+          thermalTuning: 'A14 Aggressive Cool Guard (65% Brightness)',
+          antiAliasing: 'Off (Maximum 60 FPS Stability)'
+        };
+      }
+      if (m.includes('11') || m.includes('xr')) {
+        return {
+          graphics: `${game.title} — Smooth Ultra-Light (A13 60Hz LCD)`,
+          frameRate: 'Locked 60 FPS Stable (No Lag Spikes)',
+          resolution: '720p HD Fast Frame Buffer',
+          thermalTuning: 'A13 Strict Overheat Protection (60% Brightness)',
+          antiAliasing: 'Off (Zero Thermal Throttle)'
+        };
+      }
+      if (m.includes('ipad')) {
+        return {
+          graphics: `${game.title} — Ultra Competitive iPad View (M2)`,
+          frameRate: 'Locked 120 FPS Ultra Extreme (M2 120Hz)',
+          resolution: 'Native Liquid Retina 120Hz Wide',
+          thermalTuning: 'M2 High Thermal Headroom (80% Brightness)',
+          antiAliasing: '4X MetalFX Ultra Crisp'
+        };
+      }
+
+      return base;
+    }
+
     function renderGameConfig() {
       const container = document.getElementById('gameConfigBox');
       const launchBtnText = document.getElementById('launchBtnText');
@@ -1897,7 +2008,7 @@
 
       const game = GAME_CONFIGS[AppState.selectedGame] || GAME_CONFIGS.pubg;
       const isVip = AppState.tier === 'vip';
-      const cfg = isVip ? game.vip : game.free;
+      const cfg = getDeviceTunedGameConfig(game, isVip, AppState.deviceModel);
 
       if (launchBtnText) launchBtnText.textContent = `BOOST & LAUNCH ${game.title.toUpperCase()}`;
 
@@ -1921,12 +2032,74 @@
       `;
 
       renderRecoilPresetBox(game, isVip);
+      if (typeof updateDnsDisplayBox === 'function') updateDnsDisplayBox();
+    }
+
+    function getDeviceTunedPreset(gameId, deviceModel) {
+      const m = String(deviceModel || '').toLowerCase();
+      // Device-specific tuning offsets (Hz + screen size + chip)
+      let dGen = 0, dAds = 0, cursor = 90, fireBtn = 48, hzTag = '120Hz ProMotion';
+      if (m.includes('17 pro max')) { dGen = -4; dAds = -5; cursor = 84; fireBtn = 44; hzTag = '120Hz A19 Pro Max'; }
+      else if (m.includes('17 pro')) { dGen = -2; dAds = -3; cursor = 86; fireBtn = 45; hzTag = '120Hz A19 Pro'; }
+      else if (m.includes('16 pro')) { dGen = 0; dAds = -2; cursor = 88; fireBtn = 46; hzTag = '120Hz A18 Pro'; }
+      else if (m.includes('15 pro')) { dGen = 2; dAds = 0; cursor = 91; fireBtn = 47; hzTag = '120Hz A17 Pro'; }
+      else if (m.includes('14 pro')) { dGen = 3; dAds = 2; cursor = 94; fireBtn = 48; hzTag = '120Hz A16'; }
+      else if (m.includes('13 pro')) { dGen = 5; dAds = 4; cursor = 96; fireBtn = 49; hzTag = '120Hz A15'; }
+      else if (m.includes('12')) { dGen = 7; dAds = 6; cursor = 102; fireBtn = 50; hzTag = '60Hz OLED'; }
+      else if (m.includes('11') || m.includes('xr')) { dGen = 10; dAds = 9; cursor = 108; fireBtn = 52; hzTag = '60Hz LCD'; }
+      else if (m.includes('ipad')) { dGen = -16; dAds = -12; cursor = 76; fireBtn = 56; hzTag = '120Hz iPad M2'; }
+
+      const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+      if (gameId === 'pubg') {
+        return {
+          general: `${clamp(132 + dGen, 95, 160)}% TPP / ${clamp(118 + dGen, 85, 145)}% FPP (${hzTag})`,
+          redDot: `${clamp(48 + dAds, 32, 68)}% ADS / ${clamp(295 + dAds * 4, 220, 350)}% Gyro`,
+          scope2x: `${clamp(32 + Math.round(dAds * 0.7), 20, 48)}% ADS / ${clamp(260 + dAds * 3, 200, 310)}% Gyro`,
+          scope4x: `${clamp(19 + Math.round(dAds * 0.5), 12, 30)}% ADS / ${clamp(195 + dAds * 2, 150, 240)}% Gyro`,
+          iosTouch: `Gliding Cursor: Refined • Speed: ${cursor} • Touch Accommodations: Off`
+        };
+      }
+      if (gameId === 'freefire') {
+        return {
+          general: `${clamp(186 + dGen, 150, 200)} (Smooth Left-Right • ${hzTag})`,
+          redDot: `${clamp(166 + dAds, 135, 192)} (Anti-Overdrag Vertical Control)`,
+          scope2x: `${clamp(156 + dAds, 128, 184)} (Steady Mid-Range Spray)`,
+          scope4x: `${clamp(144 + dAds, 118, 174)} (Precision Long-Range)`,
+          iosTouch: `Gliding Cursor: Refined • Speed: ${cursor} • Fire Button: ${fireBtn}%`
+        };
+      }
+      if (gameId === 'freefiremax') {
+        return {
+          general: `${clamp(188 + dGen, 155, 200)} (MAX Smooth Turn • ${hzTag})`,
+          redDot: `${clamp(168 + dAds, 138, 194)} (Low Upward Kick)`,
+          scope2x: `${clamp(158 + dAds, 130, 186)} (Balanced Mid-Range)`,
+          scope4x: `${clamp(146 + dAds, 120, 176)} (Steady Scope Control)`,
+          iosTouch: `Gliding Cursor: Refined • Speed: ${cursor + 2} • Fire Button: ${fireBtn}%`
+        };
+      }
+      if (gameId === 'codm') {
+        return {
+          general: `${clamp(146 + dGen, 110, 175)} (Smooth Horizontal • ${hzTag})`,
+          redDot: `${clamp(102 + dAds, 78, 128)} (Controlled Vertical ADS)`,
+          scope2x: `${clamp(84 + dAds, 65, 110)} (Steady Tactical Scope)`,
+          scope4x: `${clamp(64 + Math.round(dAds * 0.8), 48, 86)} (Precision Sniper / 4x)`,
+          iosTouch: `Fixed Speed Mode • Vertical Turn: ${clamp(85 + Math.round(dAds * 0.5), 75, 95)}% • Pointer: ${cursor}`
+        };
+      }
+      return {
+        general: `Camera X: ${m.includes('ipad') ? 4 : 5} / Y: 3 (${hzTag})`,
+        redDot: 'Aimed Shot X: 3 / Y: 2',
+        scope2x: 'Combat Camera: Default',
+        scope4x: 'Auto-Reset Camera: Off',
+        iosTouch: `Gliding Cursor Speed: ${cursor} • Low Power Mode: Off`
+      };
     }
 
     function renderRecoilPresetBox(game, isVip) {
       const box = document.getElementById('recoilPresetBox');
       if (!box) return;
-      const preset = SENSITIVITY_PRESETS[AppState.selectedGame] || SENSITIVITY_PRESETS.pubg;
+      const preset = getDeviceTunedPreset(AppState.selectedGame, AppState.deviceModel);
 
       if (!isVip) {
         box.innerHTML = `
@@ -1935,7 +2108,7 @@
             <span class="badge-vip-sm"><i class="fa-solid fa-lock"></i> VIP ONLY</span>
           </div>
           <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:10px;">
-            ${game.title} සඳහා ${AppState.deviceModel} වලට ගැළපෙන Legit Pro Sensitivity, Recoil Control & iOS Touch Presets ලබාගැනීමට VIP License Key එකක් ඇතුළත් කරන්න.
+            ${game.title} සඳහා <strong>${AppState.deviceModel}</strong> වලටම tune කළ Legit Pro Sensitivity, Recoil Control & iOS Touch Presets ලබාගැනීමට VIP License Key එකක් ඇතුළත් කරන්න.
           </p>
           <button class="cyber-btn primary-glow btn-full" onclick="document.getElementById('openVipModalBtn').click()">
             <i class="fa-solid fa-key"></i> Unlock Pro Sensitivity Preset
@@ -1945,9 +2118,9 @@
       }
 
       box.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-          <strong style="font-size:0.88rem; color:var(--cyan-neon);"><i class="fa-solid fa-crosshairs"></i> Pro Recoil & Sensitivity Preset</strong>
-          <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP UNLOCKED</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap;">
+          <strong style="font-size:0.88rem; color:var(--cyan-neon);"><i class="fa-solid fa-crosshairs"></i> Pro Recoil (${AppState.deviceModel})</strong>
+          <span class="badge-vip-sm"><i class="fa-solid fa-crown"></i> VIP TUNED</span>
         </div>
         <div class="config-item-row"><span class="cfg-label">General / Camera</span><span class="cfg-value text-green">${preset.general}</span></div>
         <div class="config-item-row"><span class="cfg-label">Red Dot / ADS</span><span class="cfg-value text-cyan">${preset.redDot}</span></div>
@@ -1968,7 +2141,7 @@
     window.copySensitivityPreset = function() {
       if (AppState.tier !== 'vip') return;
       const game = GAME_CONFIGS[AppState.selectedGame] || GAME_CONFIGS.pubg;
-      const p = SENSITIVITY_PRESETS[AppState.selectedGame] || SENSITIVITY_PRESETS.pubg;
+      const p = getDeviceTunedPreset(AppState.selectedGame, AppState.deviceModel);
       const text = `Smooth iOS Optimizer v2 - ${game.title} Pro Sensitivity Preset (${AppState.deviceModel})\nGeneral: ${p.general}\nRed Dot: ${p.redDot}\n2x Scope: ${p.scope2x}\n4x Scope: ${p.scope4x}\niOS Touch: ${p.iosTouch}`;
       navigator.clipboard.writeText(text).then(() => alert('✅ Pro Sensitivity Preset copied to clipboard!')).catch(() => alert(text));
     };
@@ -1976,7 +2149,7 @@
     window.downloadSensitivityPreset = function() {
       if (AppState.tier !== 'vip') return;
       const game = GAME_CONFIGS[AppState.selectedGame] || GAME_CONFIGS.pubg;
-      const p = SENSITIVITY_PRESETS[AppState.selectedGame] || SENSITIVITY_PRESETS.pubg;
+      const p = getDeviceTunedPreset(AppState.selectedGame, AppState.deviceModel);
       const content = [
         `==================================================`,
         `  SMOOTH iOS OPTIMIZER v2 - PRO SENSITIVITY GUIDE`,
@@ -2007,23 +2180,31 @@
       URL.revokeObjectURL(url);
     };
 
-    function getHostingBaseDir() {
-      const cleanHref = window.location.href.split('#')[0].split('?')[0];
-      if (cleanHref.endsWith('.html') || cleanHref.endsWith('.htm')) {
-        return cleanHref.substring(0, cleanHref.lastIndexOf('/') + 1);
+    const DNS_CONFIG_LIST = {
+      'cloudflare': { name: 'Cloudflare 1.1.1.1 Gaming DNS', primary: '1.1.1.1', secondary: '1.0.0.1', vip: false },
+      'google-dns': { name: 'Google 8.8.8.8 Ultra-Stable DNS', primary: '8.8.8.8', secondary: '8.8.4.4', vip: false },
+      'adguard-vip': { name: 'LAKEE AdGuard VIP Anti-Track DNS', primary: '94.140.14.14', secondary: '94.140.15.15', vip: true },
+      'quad9-vip': { name: 'Quad9 9.9.9.9 Secure VIP Gaming DNS', primary: '9.9.9.9', secondary: '149.112.112.112', vip: true }
+    };
+
+    function updateDnsDisplayBox() {
+      const cfg = DNS_CONFIG_LIST[AppState.selectedDns] || DNS_CONFIG_LIST['cloudflare'];
+      const locked = cfg.vip && AppState.tier !== 'vip';
+      const titleEl = document.getElementById('selectedDnsTitle');
+      const badgeEl = document.getElementById('selectedDnsBadge');
+      const pEl = document.getElementById('dnsPrimaryIp');
+      const sEl = document.getElementById('dnsSecondaryIp');
+
+      if (titleEl) titleEl.textContent = cfg.name;
+      if (badgeEl) {
+        badgeEl.textContent = locked ? 'VIP LOCKED' : 'READY';
+        badgeEl.className = locked ? 'badge-vip-sm' : 'badge-free-sm';
       }
-      return cleanHref.endsWith('/') ? cleanHref : cleanHref + '/';
+      if (pEl) pEl.textContent = locked ? '•••.•••.•••.••• (VIP Key Required)' : cfg.primary;
+      if (sEl) sEl.textContent = locked ? '•••.•••.•••.••• (VIP Key Required)' : cfg.secondary;
     }
 
     function initDnsGenerator() {
-      // Pre-check once on page load (outside click handler!) whether profiles/ folder is deployed on host
-      AppState.staticProfilesAvailable = false;
-      if (window.location.protocol.startsWith('http')) {
-        fetch(getHostingBaseDir() + 'profiles/cloudflare_3d.mobileconfig', { method: 'HEAD', cache: 'no-store' })
-          .then(res => { if (res.ok) AppState.staticProfilesAvailable = true; })
-          .catch(() => {});
-      }
-
       const dnsCards = document.querySelectorAll('.dns-card');
       dnsCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -2034,193 +2215,30 @@
           card.classList.add('active');
           card.querySelector('.dns-radio i').className = 'fa-solid fa-circle-check';
           AppState.selectedDns = card.getAttribute('data-dns');
+          updateDnsDisplayBox();
         });
       });
 
-      const downloadBtn = document.getElementById('downloadDnsBtn');
-      if (downloadBtn) {
-        downloadBtn.addEventListener('click', () => {
-          const isVipRequired = AppState.selectedDns === 'adguard-vip' || AppState.selectedDns === 'quad9-vip';
-          if (isVipRequired && AppState.tier !== 'vip') {
-            alert('VIP Gaming DNS ලබාගැනීමට VIP License Key එකක් අවශ්‍යයි!');
-            document.getElementById('vipKeyModal').classList.remove('hidden');
-            return;
-          }
-          generateAndDownloadMobileConfig(AppState.selectedDns);
-        });
-      }
-
-      const webClipBtn = document.getElementById('downloadWebClipBtn');
-      if (webClipBtn) {
-        webClipBtn.addEventListener('click', () => {
-          downloadWebClipMobileConfig();
-        });
-      }
-    }
-
-    function deliverMobileConfig(xmlContent, filename, staticPath = null) {
-      // IMPORTANT: Must remain 100% SYNCHRONOUS (no await!) so iOS Safari & Chrome never block the download!
-      const blob = new Blob([xmlContent], { type: 'application/x-apple-aspen-config' });
-      const blobUrl = URL.createObjectURL(blob);
-      const isHosted = window.location.protocol.startsWith('http');
-      const useStatic = !!(AppState.isIos && staticPath && isHosted && AppState.staticProfilesAvailable);
-      const targetUrl = useStatic ? (getHostingBaseDir() + staticPath) : blobUrl;
-
-      // Show visible download feedback + real <a> direct fallback link for every browser (never 404s!)
-      const statusBox = document.getElementById('dnsDownloadStatus');
-      const fallbackLink = document.getElementById('dnsDirectFallbackLink');
-      if (statusBox && fallbackLink) {
-        fallbackLink.href = targetUrl;
-        if (!useStatic) {
-          fallbackLink.setAttribute('download', filename);
-        } else {
-          fallbackLink.removeAttribute('download');
+      const copyDns = (which) => {
+        const cfg = DNS_CONFIG_LIST[AppState.selectedDns] || DNS_CONFIG_LIST['cloudflare'];
+        if (cfg.vip && AppState.tier !== 'vip') {
+          alert('VIP Gaming DNS ලබාගැනීමට VIP License Key එකක් අවශ්‍යයි!');
+          document.getElementById('vipKeyModal').classList.remove('hidden');
+          return;
         }
-        fallbackLink.textContent = `Tap here if download didn't start (${filename})`;
-        statusBox.classList.remove('hidden');
-      }
-
-      if (useStatic) {
-        // Verified static HTTPS .mobileconfig exists -> native iOS Profile Installer
-        window.location.href = targetUrl;
-      } else {
-        // In-memory Blob download -> NEVER 404s on any browser or device!
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
-    }
-
-    function generateAndDownloadMobileConfig(dnsType) {
-      const dnsProfiles = {
-        'cloudflare': {
-          name: 'Smooth Cloudflare 1.1.1.1 Gaming DNS',
-          dohUrl: 'https://cloudflare-dns.com/dns-query',
-          ips: ['1.1.1.1', '1.0.0.1'],
-          file: 'SmoothCloudflareDNS.mobileconfig'
-        },
-        'google-dns': {
-          name: 'Smooth Google 8.8.8.8 Gaming DNS',
-          dohUrl: 'https://dns.google/dns-query',
-          ips: ['8.8.8.8', '8.8.4.4'],
-          file: 'SmoothGoogleDNS.mobileconfig'
-        },
-        'adguard-vip': {
-          name: 'Smooth VIP Anti-Ad Gaming DNS',
-          dohUrl: 'https://dns.adguard-dns.com/dns-query',
-          ips: ['94.140.14.14', '94.140.15.15'],
-          file: 'SmoothAdGuardVIP.mobileconfig'
-        },
-        'quad9-vip': {
-          name: 'Smooth Quad9 VIP Secure Gaming DNS',
-          dohUrl: 'https://dns.quad9.net/dns-query',
-          ips: ['9.9.9.9', '149.112.112.112'],
-          file: 'SmoothQuad9VIP.mobileconfig'
-        }
+        const ip = which === 'primary' ? cfg.primary : cfg.secondary;
+        navigator.clipboard.writeText(ip)
+          .then(() => alert(`✅ Copied ${which === 'primary' ? 'Primary' : 'Secondary'} DNS: ${ip}\n\niPhone Settings > Wi-Fi > (i) > Configure DNS > Manual වලට paste කරන්න!`))
+          .catch(() => prompt('Copy this DNS IP:', ip));
       };
 
-      const cfg = dnsProfiles[dnsType] || dnsProfiles['cloudflare'];
-      const uuid1 = 'SMOOTH-DNS-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-      const uuid2 = 'PAYLOAD-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      const copyPrimaryBtn = document.getElementById('copyPrimaryDnsBtn');
+      const copySecondaryBtn = document.getElementById('copySecondaryDnsBtn');
+      if (copyPrimaryBtn) copyPrimaryBtn.addEventListener('click', () => copyDns('primary'));
+      if (copySecondaryBtn) copySecondaryBtn.addEventListener('click', () => copyDns('secondary'));
 
-      // Auto-Expiry (Apple RemovalDate): automatically uninstalls DNS profile from iPhone when VIP Key expires!
-      let removalDateXml = '';
-      let expiryNote = 'High-speed low latency gaming DNS optimized for iOS.';
-      const keyData = AppState.activeKeyData;
-      if (keyData && keyData.expires_at) {
-        const expIso = new Date(keyData.expires_at).toISOString().replace(/\.\d{3}Z$/, 'Z');
-        removalDateXml = `\n    <key>RemovalDate</key><date>${expIso}</date>`;
-        expiryNote = `Smooth VIP Gaming DNS (Auto-expires on ${new Date(keyData.expires_at).toLocaleDateString()}).`;
-      } else if (!(keyData && keyData.plan === 'lifetime')) {
-        // Free / Promo users: auto-expire profile after 3 days so they return to the website
-        const threeDaysIso = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().replace(/\.\d{3}Z$/, 'Z');
-        removalDateXml = `\n    <key>RemovalDate</key><date>${threeDaysIso}</date>`;
-        expiryNote = 'Smooth Gaming DNS Trial Profile (Auto-expires in 3 days).';
-      }
-
-      const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>PayloadDisplayName</key><string>${cfg.name}</string>
-    <key>PayloadIdentifier</key><string>com.smooth.optimizer.dns.${uuid1}</string>
-    <key>PayloadRemovalDisallowed</key><false/>
-    <key>PayloadType</key><string>Configuration</string>
-    <key>PayloadUUID</key><string>${uuid1}</string>
-    <key>PayloadVersion</key><integer>1</integer>${removalDateXml}
-    <key>PayloadDescription</key><string>${expiryNote}</string>
-    <key>PayloadContent</key>
-    <array>
-        <dict>
-            <key>DNSSettings</key>
-            <dict>
-                <key>DNSProtocol</key><string>HTTPS</string>
-                <key>ServerURL</key><string>${cfg.dohUrl}</string>
-                <key>ServerAddresses</key>
-                <array><string>${cfg.ips[0]}</string><string>${cfg.ips[1]}</string></array>
-            </dict>
-            <key>PayloadDisplayName</key><string>Encrypted DNS Settings</string>
-            <key>PayloadIdentifier</key><string>com.smooth.optimizer.dns.payload.${uuid2}</string>
-            <key>PayloadType</key><string>com.apple.dnsSettings.managed</string>
-            <key>PayloadUUID</key><string>${uuid2}</string>
-            <key>PayloadVersion</key><integer>1</integer>
-        </dict>
-    </array>
-</dict>
-</plist>`;
-
-      // Pick exact plan-matched static profile with Apple DurationUntilRemoval auto-expiry
-      let planSuffix = '3d';
-      if (keyData) {
-        if (keyData.plan === '1_day') planSuffix = '1d';
-        else if (keyData.plan === '7_days') planSuffix = '7d';
-        else if (keyData.plan === '30_days') planSuffix = '30d';
-        else if (keyData.plan === 'lifetime') planSuffix = 'life';
-      }
-      const planFile = `${dnsType}_${planSuffix}.mobileconfig`;
-      deliverMobileConfig(xmlContent, planFile, `profiles/${planFile}`);
-    }
-
-    function downloadWebClipMobileConfig() {
-      const appUrl = window.location.href.split('#')[0];
-      const uuid1 = 'SMOOTH-APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-      const uuid2 = 'WEBCLIP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-
-      const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>PayloadDisplayName</key><string>Smooth iOS Optimizer App</string>
-    <key>PayloadIdentifier</key><string>com.smooth.optimizer.app.${uuid1}</string>
-    <key>PayloadRemovalDisallowed</key><false/>
-    <key>PayloadType</key><string>Configuration</string>
-    <key>PayloadUUID</key><string>${uuid1}</string>
-    <key>PayloadVersion</key><integer>1</integer>
-    <key>PayloadDescription</key><string>Adds Smooth iOS Optimizer as a native full-screen app icon on your iPhone Home Screen.</string>
-    <key>PayloadContent</key>
-    <array>
-        <dict>
-            <key>FullScreen</key><true/>
-            <key>IgnoreManifestScope</key><true/>
-            <key>IsRemovable</key><true/>
-            <key>Label</key><string>Smooth iOS</string>
-            <key>URL</key><string>${appUrl.replace(/&/g, '&amp;')}</string>
-            <key>PayloadDisplayName</key><string>Smooth iOS Home Screen Icon</string>
-            <key>PayloadIdentifier</key><string>com.smooth.optimizer.webclip.${uuid2}</string>
-            <key>PayloadType</key><string>com.apple.webClip.managed</string>
-            <key>PayloadUUID</key><string>${uuid2}</string>
-            <key>PayloadVersion</key><integer>1</integer>
-        </dict>
-    </array>
-</dict>
-</plist>`;
-
-      deliverMobileConfig(xmlContent, 'SmoothOptimizerApp.mobileconfig');
+      updateDnsDisplayBox();
+      window.addEventListener('smooth_db_sync', updateDnsDisplayBox);
     }
 
     function initPingRadar() {
