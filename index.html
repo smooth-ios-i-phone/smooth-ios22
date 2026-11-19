@@ -751,37 +751,16 @@
           </div>
         </div>
 
-        <!-- Instant 1-Tap Copy DNS Box (Zero 404 / Works on iPhone 17 Pro & All Browsers) -->
-        <div id="dnsReadyBox" style="background:rgba(0,242,254,0.07); border:1px solid rgba(0,242,254,0.3); border-radius:12px; padding:14px; margin-bottom:14px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <strong style="font-size:0.86rem; color:var(--cyan-neon);" id="selectedDnsTitle">Cloudflare 1.1.1.1 Gaming DNS</strong>
-            <span class="badge-free-sm" id="selectedDnsBadge">READY</span>
-          </div>
-          <div class="config-item-row" style="margin-bottom:6px;">
-            <span class="cfg-label">Primary DNS</span>
-            <span class="cfg-value text-green" id="dnsPrimaryIp" style="font-family:var(--font-mono); font-size:0.95rem;">1.1.1.1</span>
-          </div>
-          <div class="config-item-row" style="margin-bottom:12px;">
-            <span class="cfg-label">Secondary DNS</span>
-            <span class="cfg-value text-cyan" id="dnsSecondaryIp" style="font-family:var(--font-mono); font-size:0.95rem;">1.0.0.1</span>
-          </div>
-          <div style="display:flex; gap:8px;">
-            <button class="cyber-btn primary-glow btn-full" id="copyPrimaryDnsBtn" style="font-size:0.8rem; padding:11px;">
-              <i class="fa-solid fa-copy"></i> Copy Primary DNS
-            </button>
-            <button class="cyber-btn btn-full" id="copySecondaryDnsBtn" style="background:rgba(157,78,221,0.18); border:1px solid rgba(157,78,221,0.45); color:#c084fc; font-size:0.8rem; padding:11px;">
-              <i class="fa-solid fa-copy"></i> Copy Secondary
-            </button>
-          </div>
-        </div>
+        <button class="cyber-btn primary-glow btn-full" id="downloadDnsBtn" style="margin-bottom: 14px;">
+          <i class="fa-solid fa-download"></i> Download Apple DNS Profile (.mobileconfig)
+        </button>
 
         <div class="ios-install-steps" style="margin-bottom: 14px;">
-          <h4><i class="fa-brands fa-apple"></i> iPhone එකට DNS දාගන්නේ මෙහෙමයි (තත්පර 15යි!):</h4>
+          <h4><i class="fa-brands fa-apple"></i> iPhone එකට Install කරගන්නේ මෙහෙමයි:</h4>
           <ol>
-            <li>ඉහත <strong>Copy Primary DNS</strong> button එක tap කරන්න.</li>
-            <li>iPhone <strong>Settings → Wi-Fi</strong> ගිහින් ඔයාගේ Wi-Fi නම ඉස්සරහ තියෙන <strong>(i)</strong> icon එක tap කරන්න.</li>
-            <li>පහළට ගිහින් <strong>Configure DNS → Manual</strong> තෝරන්න.</li>
-            <li>පරණ DNS අයින් කරලා <strong>Add Server</strong> ගිහින් Primary DNS (සහ Secondary DNS) paste කරලා <strong>Save</strong> ඔබන්න! ✅</li>
+            <li>iPhone <strong>Safari</strong> එකෙන් ඉහත <strong>Download</strong> button එක tap කර <strong>"Allow"</strong> දෙන්න.</li>
+            <li>iPhone <strong>Settings → General → VPN &amp; Device Management</strong> වෙත යන්න.</li>
+            <li><strong>👑 LAKEE VIP OPTIMIZER 👑</strong> tap කර <strong>"Install"</strong> ඔබලා passcode එක දෙන්න. Finished! ✅</li>
           </ol>
         </div>
 
@@ -2181,11 +2160,19 @@
     };
 
     const DNS_CONFIG_LIST = {
-      'cloudflare': { name: 'Cloudflare 1.1.1.1 Gaming DNS', primary: '1.1.1.1', secondary: '1.0.0.1', vip: false },
-      'google-dns': { name: 'Google 8.8.8.8 Ultra-Stable DNS', primary: '8.8.8.8', secondary: '8.8.4.4', vip: false },
-      'adguard-vip': { name: 'LAKEE AdGuard VIP Anti-Track DNS', primary: '94.140.14.14', secondary: '94.140.15.15', vip: true },
-      'quad9-vip': { name: 'Quad9 9.9.9.9 Secure VIP Gaming DNS', primary: '9.9.9.9', secondary: '149.112.112.112', vip: true }
+      'cloudflare': { name: 'Cloudflare 1.1.1.1 Gaming DNS', org: 'LAKEE VIP DNS • Cloudflare 1.1.1.1', dohUrl: 'https://cloudflare-dns.com/dns-query', primary: '1.1.1.1', secondary: '1.0.0.1', file: 'SmoothCloudflareDNS.mobileconfig', vip: false },
+      'google-dns': { name: 'Google 8.8.8.8 Ultra-Stable DNS', org: 'LAKEE VIP DNS • Google 8.8.8.8', dohUrl: 'https://dns.google/dns-query', primary: '8.8.8.8', secondary: '8.8.4.4', file: 'SmoothGoogleDNS.mobileconfig', vip: false },
+      'adguard-vip': { name: 'LAKEE AdGuard VIP Anti-Track DNS', org: 'LAKEE VIP DNS • AdGuard Anti-Track', dohUrl: 'https://dns.adguard-dns.com/dns-query', primary: '94.140.14.14', secondary: '94.140.15.15', file: 'SmoothAdGuardVIP.mobileconfig', vip: true },
+      'quad9-vip': { name: 'Quad9 9.9.9.9 Secure VIP Gaming DNS', org: 'LAKEE VIP DNS • Quad9 9.9.9.9', dohUrl: 'https://dns.quad9.net/dns-query', primary: '9.9.9.9', secondary: '149.112.112.112', file: 'SmoothQuad9VIP.mobileconfig', vip: true }
     };
+
+    function getHostingBaseDir() {
+      const cleanHref = window.location.href.split('#')[0].split('?')[0];
+      if (cleanHref.endsWith('.html') || cleanHref.endsWith('.htm')) {
+        return cleanHref.substring(0, cleanHref.lastIndexOf('/') + 1);
+      }
+      return cleanHref.endsWith('/') ? cleanHref : cleanHref + '/';
+    }
 
     function updateDnsDisplayBox() {
       const cfg = DNS_CONFIG_LIST[AppState.selectedDns] || DNS_CONFIG_LIST['cloudflare'];
@@ -2204,7 +2191,77 @@
       if (sEl) sEl.textContent = locked ? '•••.•••.•••.••• (VIP Key Required)' : cfg.secondary;
     }
 
+    function downloadSelectedDnsProfile() {
+      const cfg = DNS_CONFIG_LIST[AppState.selectedDns] || DNS_CONFIG_LIST['cloudflare'];
+      if (cfg.vip && AppState.tier !== 'vip') {
+        alert('VIP Gaming DNS ලබාගැනීමට VIP License Key එකක් අවශ්‍යයි!');
+        document.getElementById('vipKeyModal').classList.remove('hidden');
+        return;
+      }
+
+      const isHosted = window.location.protocol.startsWith('http');
+      if (AppState.isIos && isHosted && AppState.staticProfilesAvailable) {
+        window.location.href = getHostingBaseDir() + 'profiles/' + cfg.file;
+        return;
+      }
+
+      const uuid1 = 'LAKEE-DNS-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      const uuid2 = 'PAYLOAD-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+      const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadDisplayName</key><string>👑 LAKEE VIP OPTIMIZER 👑</string>
+    <key>PayloadOrganization</key><string>${cfg.org}</string>
+    <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.${uuid1}</string>
+    <key>PayloadRemovalDisallowed</key><false/>
+    <key>PayloadType</key><string>Configuration</string>
+    <key>PayloadUUID</key><string>${uuid1}</string>
+    <key>PayloadVersion</key><integer>1</integer>
+    <key>PayloadDescription</key><string>👑 LAKEE VIP OPTIMIZER v2 👑
+━━━━━━━━━━━━━━━━━━━━
+✅ ${cfg.name}
+📱 Compatible: iPhone 6 – iPhone 17 Pro Max
+✅ 100% Safe &amp; Anti-Ban (Official iOS Profile)</string>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key><string>HTTPS</string>
+                <key>ServerURL</key><string>${cfg.dohUrl}</string>
+                <key>ServerAddresses</key>
+                <array><string>${cfg.primary}</string><string>${cfg.secondary}</string></array>
+            </dict>
+            <key>PayloadDisplayName</key><string>LAKEE Encrypted DNS</string>
+            <key>PayloadIdentifier</key><string>com.lakee.optimizer.dns.payload.${uuid2}</string>
+            <key>PayloadType</key><string>com.apple.dnsSettings.managed</string>
+            <key>PayloadUUID</key><string>${uuid2}</string>
+            <key>PayloadVersion</key><integer>1</integer>
+        </dict>
+    </array>
+</dict>
+</plist>`;
+
+      const blob = new Blob([xmlContent], { type: 'application/x-apple-aspen-config' });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = cfg.file;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+    }
+
     function initDnsGenerator() {
+      AppState.staticProfilesAvailable = false;
+      if (window.location.protocol.startsWith('http')) {
+        fetch(getHostingBaseDir() + 'profiles/SmoothCloudflareDNS.mobileconfig', { method: 'HEAD', cache: 'no-store' })
+          .then(res => { if (res.ok) AppState.staticProfilesAvailable = true; })
+          .catch(() => {});
+      }
+
       const dnsCards = document.querySelectorAll('.dns-card');
       dnsCards.forEach(card => {
         card.addEventListener('click', () => {
@@ -2218,6 +2275,9 @@
           updateDnsDisplayBox();
         });
       });
+
+      const downloadBtn = document.getElementById('downloadDnsBtn');
+      if (downloadBtn) downloadBtn.addEventListener('click', downloadSelectedDnsProfile);
 
       const copyDns = (which) => {
         const cfg = DNS_CONFIG_LIST[AppState.selectedDns] || DNS_CONFIG_LIST['cloudflare'];
